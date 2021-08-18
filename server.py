@@ -38,51 +38,87 @@ score = [0, 0]
 player = 1
 
 gameData = [ball, player1, player2, score]
+gameSelected = False
+
+def setup(previousGamemode): # Is in server
+
+    if previousGamemode == -1:
+        choices = ["Choose gamemode", "Quit"]
+        for i in range(1, len(choices) + 1):
+            print("%i) %s" % (i, choices[i-1]))
+    else:
+        choices = ["Play again", "Change gamemode", "Quit"]
+        for i in range(1, len(choices) + 1):
+            print("%i) %s" % (i, choices[i-1]))
+
+    badInput = True
+    while badInput:
+        choice = input("Please choose from above: ")
+        try:
+            index = int(choice)
+            if previousGamemode != -1:
+                index = index - 1
+            badInput = False
+        except:
+            print("\nPlease choose from options above \n")
+
+    print()
+    gamemode = -1
+    if index == 1:
+        choices = ["Regular Pong", "Fog of War Pong", "4 Person Pong"]
+        for i in range(1, len(choices) + 1):
+            print("%i) %s" % (i, choices[i-1]))
+        badInput = True
+        while badInput:
+            choice = input("Please choose from above: ")
+            try:
+                gamemode = int(choice)
+                gamemode = gamemode - 1
+                badInput = False
+            except:
+                print("Please choose 1, 2, or 3")
+    return index, gamemode
 
 def threaded_client(conn, player):
     time.sleep(10)
     conn.send(pickle.dumps(player))
-    conn.send(pickle.dumps(gameData))
     while True:
-        try:
-            data = pickle.loads(conn.recv(2048))
-            gameData[player] = data
+        global gameSelected
+        if gameSelected == True:
+            conn.send(pickle.dumps(gameData))
+            while True:
+                try:
+                    data = pickle.loads(conn.recv(2048))
+                    gameData[player] = data
 
-            if not data:
-                print("\nPlayer %i has disconnected.\n" % player)
-                break
-            else:
-                print("Received from player %i" % player)
-                print("    %s" % data)
-                print("Sending to player %i" % player)
-                print("    %s" % ball)
+                    if not data:
+                        print("\nPlayer %i has disconnected.\n" % player)
+                        break
+                    else:
+                        print("Received from player %i" % player)
+                        print("    %s" % data)
+                        print("Sending to player %i" % player)
+                        print("    %s" % ball)
 
-            conn.sendall(pickle.dumps(gameData))
-        except:
-            break
-
-    print("Connection Lost\n\nQuitting game")
-    conn.close()
-
-def main():
-    global player
-    clock = pygame.time.Clock()
-    while player <= 2:
-        conn, addr = s.accept()
-        print("Player", player, "connected to", addr)
-        start_new_thread(threaded_client, (conn, player))
-        player += 1
+                    conn.sendall(pickle.dumps(gameData))
+                except:
+                    print("Connection Lost\n\nQuitting game")
+                    conn.close()
+                    return
 
 
-    print("Everyone connected.\n\nGame starting in 10 seconds\n")
-    time.sleep(10)
+
+def playRegPong():
+    print("Playing Regular Pong")
+    global gameSelected
     run = True
+    gameSelected = True
     while run:
         if gameData[3][0] >= 11:
             run = False
             print("Player 1 wins!")
             winner = "Player 1"
-        elif gameData[3][0] >= 11:
+        elif gameData[3][1] >= 11:
             run = False
             print("Player 2 wins!")
             winner = "Player 2"
@@ -92,6 +128,62 @@ def main():
         clock.tick(60)
 
     print("%s won!" % winner)
+    gameSelected = False
+
+def playFogOfWar():
+    print("Playing fog of war pong")
+
+def play4Person():
+    print("Playing 4 person Pong")
+
+def chooseGamemode():
+    previousGamemode = -1
+    keepPlaying = True
+    global gameSelected
+    while keepPlaying:
+        choice, gamemode = setup(previousGamemode)
+        if choice == 0:
+            if previousGamemode == 0:
+                gameSelected = True
+                playRegPong()
+            elif previousGamemode == 1:
+                gameSelected = True
+                playFogOfWar()
+            else:
+                gameSelected = True
+                play4Person()
+        elif choice == 1:
+            if gamemode == 0:
+                gameSelected = True
+                playRegPong()
+                previousGamemode = 0
+            elif gamemode == 1:
+                gameSelected = True
+                playFogOfWar()
+                previousGamemode = 1
+            else:
+                gameSelected = True
+                play4Person()
+                previousGamemode = 2
+        else:
+            print("Quitting game")
+            break
+
+
+clock = pygame.time.Clock()
+
+def main():
+    global player
+    while player <= 2:
+        conn, addr = s.accept()
+        print("Player", player, "connected to", addr)
+        start_new_thread(threaded_client, (conn, player))
+        player += 1
+
+
+    print("Everyone connected. /nPlease choose which gamemode you would like to play")
+
+    chooseGamemode()
     conn.close()
 
 main()

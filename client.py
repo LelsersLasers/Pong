@@ -12,7 +12,7 @@ from network import Network
 pygame.init()
 size = (700, 500)
 win = pygame.display.set_mode(size)
-pygame.display.set_caption("Pong Client v0.01")
+pygame.display.set_caption("Pong Client v0.02")
 
 
 def displayScore(score, win):
@@ -20,6 +20,15 @@ def displayScore(score, win):
 	text = fontForText.render("%i - %i" % (score[0], score[1]), True, (255, 255, 255), (0, 0, 0))
 
 	win.blit(text, (317, 30))
+
+def displayWinnerScreen(winner, win):
+	fontForText = pygame.font.Font('freesansbold.ttf', 32)
+	text = fontForText.render("%s won" % (winner), True, (255, 255, 255), (0, 0, 0))
+	fontForText = pygame.font.Font('freesansbold.ttf', 20)
+	text2 = fontForText.render("Returning to menu")
+
+	win.blit(text, (317, win.y / 2))
+	win.blit(text2, (317, 400))
 
 def redrawWindow(win, gameData):
     win.fill((0,0,0))
@@ -39,7 +48,7 @@ def main():
         main()
 
     clientNum = n.getData() # Game Data should be a list of ball, player1, player2, score
-    print(clientNum)
+    print("Client number: ", clientNum)
     clock = pygame.time.Clock()
     gameData = n.getGameData()
     run = True
@@ -65,6 +74,7 @@ def main():
         gameData[clientNum].move()
         redrawWindow(win, gameData)
 
+    displayWinnerScreen(winner, win)
 
 
 main()

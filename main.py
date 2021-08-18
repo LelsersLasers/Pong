@@ -1,5 +1,5 @@
 """
-Description: Plays pong in pygame using pygame graphics, vectors (seperate class) to figure out movement of the ball, increasing/decreasing y values of players to have players move. Which allows the players 
+Description: Plays pong in pygame using pygame graphics, vectors (seperate class) to figure out movement of the ball, increasing/decreasing y values of players to have players move. Which allows the players
 """
 import pygame
 import tkinter
@@ -12,7 +12,7 @@ def displayWinnerScreen(winner, win):
 	fontForText = pygame.font.Font('freesansbold.ttf', 32)
 	text = fontForText.render("%s won" % (winner), True, (255, 255, 255), (0, 0, 0))
 	fontForText = pygame.font.Font('freesansbold.ttf', 20)
-	text2 = fontForText.render("Press Space to play again\n \nPress Enter to return to menu")
+	text2 = fontForText.render("Returning to menu")
 
 	win.blit(text, (317, win.y / 2))
 	win.blit(text2, (317, 400))
@@ -51,7 +51,7 @@ def setup(): # Is in server
 				print("Please choose 1, 2, or 3")
 	dif = dif / 4
 	return index, dif
-	
+
 
 def main():
 	gamemode, dif = setup()
@@ -62,7 +62,7 @@ def main():
 
 	player = Player(50, 250, 10, 50, 1, 0)
 	player2 = Player(650, 250, 10, 50, 2, dif)
-	
+
 	score = [0, 0]
 
 

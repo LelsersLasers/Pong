@@ -4,7 +4,7 @@ class Player():
 	def __init__(self, x, y, width, height, player, difficulty):
 		self.x = x
 		self.y = y
-		self.speed = 2 + difficulty # 0 .25 .5 (Only 0 for users, 0 for computer is easy)
+		self.speed = 1 + difficulty # 0 .25 .5 (Only 0 for users, 0 for computer is easy)
 		self.width = width
 		self.height = height
 		self.color = (255, 255, 255)

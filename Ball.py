@@ -5,12 +5,18 @@ from Vector import Vector
 
 class Ball():
 	def __init__(self, vector, direction):
-		self.speed = 3
+		self.speed = 2
 		self.vector = vector
 		self.direction = direction
 		self.color = (255, 255, 255)
 		self.size = 7
 		self.rect = (self.vector.x, self.vector.y, self.size, self.size)
+
+		if self.vector.x > -0.3 and self.vector.x < 0.3:
+			if self.vector.x < 0:
+				self.vector.x = -0.3
+			else:
+				self.vector.x = 0.35
 
 	def __str__(self):
 		return "Ball: X: %i; Y: %i" % (self.vector.x, self.vector.y)
