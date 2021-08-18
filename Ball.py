@@ -16,7 +16,7 @@ class Ball():
 			if self.vector.x < 0:
 				self.vector.x = -0.3
 			else:
-				self.vector.x = 0.35
+				self.vector.x = 0.3
 
 	def __str__(self):
 		return "Ball: X: %i; Y: %i" % (self.vector.x, self.vector.y)
