@@ -31,13 +31,13 @@ def setup(): # Is in server
 
 	badInput = True
 	while badInput:
-		choice = input("Gamemode (1,2,3): ")
+		choice = input("Gamemode (1,2): ")
 		try:
 			index = int(choice)
 			index = index - 1
 			badInput = False
 		except:
-			print("Please choose 1, 2, or 3")
+			print("Please choose 1, or 2")
 	dif = 0.0
 	if index == 0:
 		badInput = True
