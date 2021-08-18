@@ -11,7 +11,9 @@ class Ball():
 		self.color = (255, 255, 255)
 		self.size = 7
 		self.rect = (self.vector.x, self.vector.y, self.size, self.size)
-		self.frame = -100;
+
+	def __str__(self):
+		return "Ball: X: %i; Y: %i" % (self.vector.x, self.vector.y)
 
 	def draw(self, win):
 		pygame.draw.circle(win, self.color, self.vector.get(), self.size, self.size)

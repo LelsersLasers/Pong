@@ -11,6 +11,8 @@ class Player():
 		self.rect = (x, y, width, height)
 		self.player = player
 
+	def __str__(self):
+		return "Player: X: %i; Y: %i" % (self.x, self.y)
 	def draw(self, win):
 		pygame.draw.rect(win, self.color, self.rect)
 

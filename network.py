@@ -34,3 +34,9 @@ class Network():
             return pickle.loads(self.client.recv(2048))
         except socket.error as e:
             print(e, "\nThere was a problem with connection.\n\nReconnecting...")
+
+    def getGameData(self):
+        try:
+            return pickle.loads(self.client.recv(2048 * 2))
+        except:
+            print("\nConnection failed")

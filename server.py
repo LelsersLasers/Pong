@@ -5,7 +5,6 @@ Authors: Jerry and Millan
 """
 
 import pygame
-import tkinter
 import random
 import time
 from Player import Player
@@ -24,11 +23,10 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
     s.bind((server, port))
-    print(server)
 except socket.error as e:
     str(e)
 
-print("waiting for a connection.\n\nServerStarted\n")
+print("waiting for a connection.\n\nServer Started\n")
 s.listen(2)
 
 v1 = Vector(350, 250)
@@ -39,9 +37,11 @@ player2 = Player(650, 250, 10, 50, 2, 0)
 score = [0, 0]
 player = 1
 
-gameData = [ball, player1, player2, score, player]
+gameData = [ball, player1, player2, score]
 
 def threaded_client(conn, player):
+    time.sleep(10)
+    conn.send(pickle.dumps(player))
     conn.send(pickle.dumps(gameData))
     while True:
         try:
@@ -52,8 +52,10 @@ def threaded_client(conn, player):
                 print("\nPlayer %i has disconnected.\n" % player)
                 break
             else:
-                print("Received Info from player %i" % player)
-                print("Sending game data to player %i" % player)
+                print("Received from player %i" % player)
+                print("    %s" % data)
+                print("Sending to player %i" % player)
+                print("    %s" % ball)
 
             conn.sendall(pickle.dumps(gameData))
         except:
@@ -62,34 +64,34 @@ def threaded_client(conn, player):
     print("Connection Lost\n\nQuitting game")
     conn.close()
 
-
 def main():
+    global player
     clock = pygame.time.Clock()
     while player <= 2:
         conn, addr = s.accept()
-        print("Player %i connected to ", addr)
-
+        print("Player", player, "connected to", addr)
         start_new_thread(threaded_client, (conn, player))
         player += 1
 
-    print("Everyone connected.\n\nGame starting in 2 seconds\n")
-    time.sleep(2)
+
+    print("Everyone connected.\n\nGame starting in 10 seconds\n")
+    time.sleep(10)
     run = True
     while run:
         if gameData[3][0] >= 11:
-			run = False
-			print("Player 1 wins!")
-			winner = "Player 1"
-		elif gameData[3][0] >= 11:
-			run = False
-			print("Player 2 wins!")
-			winner = "Player 2"
+            run = False
+            print("Player 1 wins!")
+            winner = "Player 1"
+        elif gameData[3][0] >= 11:
+            run = False
+            print("Player 2 wins!")
+            winner = "Player 2"
 
-        gameDate[0].checkHit(gameData[3], gameData[1], gameData[2])
+        gameData[0].checkHit(gameData[3], gameData[1], gameData[2])
         gameData[0].move() # Moves Ball
         clock.tick(60)
 
     print("%s won!" % winner)
-
+    conn.close()
 
 main()
