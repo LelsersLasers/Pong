@@ -12,6 +12,12 @@ class Ball():
 		self.size = 7
 		self.rect = (self.vector.x, self.vector.y, self.size, self.size)
 
+		if self.vector.x > -0.3 and self.vector.x < 0.3:
+			if self.vector.x < 0:
+				self.vector.x = -0.3
+			else:
+				self.vector.x = 0.3
+
 	def __str__(self):
 		return "Ball: X: %i; Y: %i" % (self.vector.x, self.vector.y)
 
