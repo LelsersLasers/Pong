@@ -52,7 +52,7 @@ def main():
             run = False
             print("Player 1 wins!")
             winner = "Player 1"
-        elif gameData[3][0] >= 11:
+        elif gameData[3][1] >= 11:
             run = False
             print("Player 2 wins!")
             winner = "Player 2"
