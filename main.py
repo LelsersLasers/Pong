@@ -25,19 +25,19 @@ def displayScore(score, win):
 
 
 def setup(): # Is in server
-	choices = ["1 player", "2 player local", "2 player with server"]
+	choices = ["1 player", "2 player local", "2 player with server", "0 player"]
 	for i in range(1, len(choices) + 1):
 		print("%i) %s" % (i, choices[i-1]))
 
 	badInput = True
 	while badInput:
-		choice = input("Gamemode (1,2): ")
+		choice = input("Gamemode (1,2,4): ")
 		try:
 			index = int(choice)
 			index = index - 1
 			badInput = False
 		except:
-			print("Please choose 1, or 2")
+			print("Please choose 1, 2, or 4")
 	dif = 0.0
 	if index == 0:
 		badInput = True
@@ -87,10 +87,14 @@ def main():
 			if event.type == pygame.QUIT:
 				gameOn = False
 
-		player.move()
 		if gamemode == 0:
+			player.move()
 			player2.computerTry(ball)
+		elif gamemode == 3:
+			player2.computerTry(ball)
+			player.computerTry(ball)
 		elif gamemode == 1:
+			player.move()
 			player2.move()
 
 		ball.checkHit(score, player, player2)
