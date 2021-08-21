@@ -80,7 +80,7 @@ def setup(previousGamemode): # Is in server
     return index, gamemode
 
 def threaded_client(conn, player):
-    time.sleep(10)
+    time.sleep(3)
     conn.send(pickle.dumps(player))
     while True:
         global gameSelected
@@ -102,7 +102,7 @@ def threaded_client(conn, player):
 
                     conn.sendall(pickle.dumps(gameData))
                 except:
-                    print("Connection Lost\n\nQuitting game")
+                    print("\nConnection Lost\n\nQuitting game")
                     conn.close()
                     return
 

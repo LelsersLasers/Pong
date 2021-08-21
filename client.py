@@ -25,9 +25,9 @@ def displayWinnerScreen(winner, win):
 	fontForText = pygame.font.Font('freesansbold.ttf', 32)
 	text = fontForText.render("%s won" % (winner), True, (255, 255, 255), (0, 0, 0))
 	fontForText = pygame.font.Font('freesansbold.ttf', 20)
-	text2 = fontForText.render("Returning to menu")
+	text2 = fontForText.render("Returning to menu", True, (255, 255, 255), (0, 0, 0))
 
-	win.blit(text, (317, win.y / 2))
+	win.blit(text, (317, 250))
 	win.blit(text2, (317, 400))
 
 def redrawWindow(win, gameData):
@@ -51,30 +51,31 @@ def main():
     print("Client number: ", clientNum)
     clock = pygame.time.Clock()
     gameData = n.getGameData()
+    open = True
     run = True
+    while open:
+        while run:
+            clock.tick(60)
+            gameData = n.send(gameData[clientNum])
 
-    while run:
-        clock.tick(60)
-        gameData = n.send(gameData[clientNum])
-
-        if gameData[3][0] >= 11:
-            run = False
-            print("Player 1 wins!")
-            winner = "Player 1"
-        elif gameData[3][1] >= 11:
-            run = False
-            print("Player 2 wins!")
-            winner = "Player 2"
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if gameData[3][0] >= 11:
                 run = False
-                pygame.quit()
+                print("Player 1 wins!")
+                winner = "Player 1"
+                displayWinnerScreen(winner, win)
+            elif gameData[3][1] >= 11:
+                run = False
+                print("Player 2 wins!")
+                winner = "Player 2"
+                displayWinnerScreen(winner, win)
 
-        gameData[clientNum].move()
-        redrawWindow(win, gameData)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
 
-    displayWinnerScreen(winner, win)
+            gameData[clientNum].move()
+            redrawWindow(win, gameData)
 
 
 main()
