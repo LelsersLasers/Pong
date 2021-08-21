@@ -62,12 +62,10 @@ def main():
                 run = False
                 print("Player 1 wins!")
                 winner = "Player 1"
-                displayWinnerScreen(winner, win)
             elif gameData[3][1] >= 11:
                 run = False
                 print("Player 2 wins!")
                 winner = "Player 2"
-                displayWinnerScreen(winner, win)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -76,6 +74,7 @@ def main():
 
             gameData[clientNum].move()
             redrawWindow(win, gameData)
+        displayWinnerScreen(winner, win)
 
 
 main()
