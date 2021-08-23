@@ -30,8 +30,7 @@ print("waiting for a connection.\n\nServer Started\n")
 s.listen(2)
 
 v1 = Vector(350, 250)
-v2 = Vector(random.uniform(-1, 0.75), random.uniform(-1, 0.75))
-ball = Ball(v1, v2)
+ball = Ball(v1)
 player1 = Player(50, 250, 10, 50, 1, 0)
 player2 = Player(650, 250, 10, 50, 2, 0)
 score = [0, 0]
