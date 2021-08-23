@@ -4,13 +4,14 @@ from Vector import Vector
 
 
 class Ball():
-	def __init__(self, vector, direction):
+	def __init__(self, vector):
 		self.speed = 3
 		self.vector = vector
-		self.direction = direction
 		self.color = (255, 255, 255)
 		self.size = 7
 		self.rect = (self.vector.x, self.vector.y, self.size, self.size)
+
+		self.resetDir()
 
 		if self.vector.x > -0.3 and self.vector.x < 0.3:
 			if self.vector.x < 0:
@@ -20,6 +21,9 @@ class Ball():
 
 	def __str__(self):
 		return "Ball: X: %i; Y: %i" % (self.vector.x, self.vector.y)
+
+	def resetDir(self):
+		self.direction = Vector(random.uniform(-1, 1), random.uniform(-1, 1))
 
 	def draw(self, win):
 		pygame.draw.circle(win, self.color, self.vector.get(), self.size, self.size)
@@ -35,15 +39,15 @@ class Ball():
 			score[1] += 1
 			self.vector.x = 350
 			self.vector.y = 250
-			self.direction = Vector(random.uniform(-1, 0.75), random.uniform(-1, 0.75))
 			self.speed = self.speed * 1.01
+			self.resetDir()
 		elif self.vector.x >= 700 - self.size:
 			self.direction.x = 0 - self.direction.x
 			self.vector.x = 350
 			self.vector.y = 250
-			self.direction = Vector(random.uniform(-1, 0.75), random.uniform(-1, 0.75))
 			score[0] += 1
 			self.speed = self.speed * 1.01
+			self.resetDir()
 		elif self.vector.y <= 0 + self.size:
 			self.direction.y = 0 - self.direction.y
 			self.speed = self.speed * 1.01
